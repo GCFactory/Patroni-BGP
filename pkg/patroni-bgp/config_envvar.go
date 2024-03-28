@@ -1,9 +1,19 @@
-package config
+package patroni_bgp
 
 // Environment variables
 const (
 	// vipLogLevel - defines the level of logging to produce (5 being the most verbose)
 	vipLogLevel = "vip_loglevel"
+
+	// patroniUrl - defines URL of patroni REST API
+	patroniUrl = "patroni_url"
+
+	// primaryAddress - defines what address will be announced for Primary instance
+	primaryAddress = "patroni_primary_address"
+	// syncReplicaAddress - defines what address will be announced for replica instance in sync mode
+	syncReplicaAddress = "patroni_syncreplica_address"
+	// asyncReplicaAddress - defines what address will be announced for replica instance in async mode
+	asyncReplicaAddress = "patroni_asyncreplica_address"
 
 	// vipInterface - defines the interface that the vip should bind too
 	vipInterface = "vip_interface"
@@ -11,36 +21,20 @@ const (
 	// vipServicesInterface - defines the interface that the service vips should bind too
 	vipServicesInterface = "vip_servicesinterface"
 
-	// vipCidr - defines the cidr that the vip will use (for BGP)
 	vipCidr = "vip_cidr"
 
+	// vipCidr - defines the cidr that the vip will use (for BGP)
 	// vipSubnet - defines the subnet that the vip will use
-	vipSubnet = "vip_subnet"
-
 	/////////////////////////////////////
 	// TO DO:
 	// Determine how to tidy this mess up
 	/////////////////////////////////////
-
 	// vipAddress - defines the address that the vip will expose
 	// DEPRECATED: will be removed in a next release
+
+	vipSubnet  = "vip_subnet"
 	vipAddress = "vip_address"
 
-	patroniUrl = "patroni_url"
-
-	// address - defines the address that would be used as a vip
-	// it may be an IP or a DNS name, in case of a DNS name
-	// patroni-bgp will try to resolve it and use the IP as a VIP
-	address = "address"
-
-	// port - defines the port for the VIP
-	port = "port"
-
-	// providerConfig defines a path to a configuration that should be parsed
-	providerConfig = "provider_config"
-
-	// bgpEnable defines if BGP should be enabled
-	bgpEnable = "bgp_enable"
 	// bgpRouterID defines the routerID for the BGP server
 	bgpRouterID = "bgp_routerid"
 	// bgpRouterInterface defines the interface that we can find the address for

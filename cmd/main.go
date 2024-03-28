@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"github.com/GCFactory/Patroni-BGP/pkg/config"
 	"github.com/GCFactory/Patroni-BGP/pkg/manager"
+	patroni_bgp "github.com/GCFactory/Patroni-BGP/pkg/patroni-bgp"
 	"github.com/GCFactory/Patroni-BGP/pkg/vip"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	initConfig config.Config
+	initConfig patroni_bgp.Config
 )
 
 // ConfigMap name within a Kubernetes cluster
@@ -23,7 +23,7 @@ var configMap string
 func main() {
 	ctx := context.TODO()
 	// parse environment variables, these will overwrite anything loaded or flags
-	err := config.ParseEnvironment(&initConfig)
+	err := patroni_bgp.ParseEnvironment(&initConfig)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -38,7 +38,6 @@ func main() {
 		})
 	}
 
-	// if we're not using Wireguard then we'll need to use an actual interface
 	// Check if the interface needs auto-detecting
 	if initConfig.Interface == "" {
 		log.Infof("No interface is specified for VIP in config, auto-detecting default Interface")

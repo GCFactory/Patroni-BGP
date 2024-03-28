@@ -1,4 +1,4 @@
-package config
+package patroni_bgp
 
 import (
 	"os"
@@ -40,16 +40,28 @@ func ParseEnvironment(c *Config) error {
 		c.PatroniUrl = env
 	}
 
+	// Find interface
+	env = os.Getenv(primaryAddress)
+	if env != "" {
+		c.PrimaryAddress = env
+	}
+
+	// Find interface
+	env = os.Getenv(syncReplicaAddress)
+	if env != "" {
+		c.SyncReplicaAddress = env
+	}
+
+	// Find interface
+	env = os.Getenv(asyncReplicaAddress)
+	if env != "" {
+		c.AsyncReplicaAddress = env
+	}
+
 	// Find (services) interface
 	env = os.Getenv(vipServicesInterface)
 	if env != "" {
 		c.ServicesInterface = env
-	}
-
-	// Find provider configuration
-	env = os.Getenv(providerConfig)
-	if env != "" {
-		c.ProviderConfig = env
 	}
 
 	// Find vip address
@@ -59,23 +71,6 @@ func ParseEnvironment(c *Config) error {
 		c.VIP = env
 		// } else {
 		// 	c.VIP = os.Getenv(address)
-	}
-
-	// Find address
-	env = os.Getenv(address)
-	if env != "" {
-		// TODO - parse address net.Host()
-		c.MasterAddress = env
-	}
-
-	// Find vip port
-	env = os.Getenv(port)
-	if env != "" {
-		i, err := strconv.ParseInt(env, 10, 32)
-		if err != nil {
-			return err
-		}
-		c.Port = int(i)
 	}
 
 	// Find vip address cidr range
@@ -204,7 +199,7 @@ func ParseEnvironment(c *Config) error {
 		c.BGPConfig.SourceIF = env
 	}
 
-	// BGP Source MasterAddress
+	// BGP Source PrimaryAddress
 	env = os.Getenv(bgpSourceIP)
 	if env != "" {
 		c.BGPConfig.SourceIP = env

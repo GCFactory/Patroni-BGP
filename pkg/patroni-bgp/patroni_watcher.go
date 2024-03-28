@@ -1,4 +1,4 @@
-package patroni
+package patroni_bgp
 
 import (
 	log "github.com/sirupsen/logrus"
@@ -7,17 +7,11 @@ import (
 	"time"
 )
 
-const (
-	PatroniStateUndefined = iota
-	PatroniStateError
-	PatroniStateMaster
-	PatroniStateReplica
-	PatroniStateSyncReplica
-)
-
 type PatroniWatcher struct {
 	Url        string
 	httpClient *http.Client
+
+	urlToCheck map[string]int
 
 	resultChan chan int
 	stopChan   chan int
@@ -29,9 +23,25 @@ func NewPatroniWatcher(url string) (w *PatroniWatcher) {
 		httpClient: &http.Client{
 			Timeout: time.Second * 60 * 60 * 600,
 		},
+		urlToCheck: map[string]int{},
 		resultChan: make(chan int),
 		stopChan:   make(chan int),
 	}
+}
+
+func (w *PatroniWatcher) EnablePrimaryAddress() {
+	w.urlToCheck["/primary"] = PatroniStateMaster
+}
+
+func (w *PatroniWatcher) EnableAsyncReplicaAddress() {
+	w.urlToCheck["/asynchronous"] = PatroniStateAsyncReplica
+}
+func (w *PatroniWatcher) EnableSyncReplicaAddress() {
+	w.urlToCheck["/synchronous"] = PatroniStateSyncReplica
+}
+
+func (w *PatroniWatcher) EnableReplicaAddress() {
+	w.urlToCheck["/replica"] = PatroniStateReplica
 }
 
 func (w *PatroniWatcher) ResultChan() *chan int {
@@ -47,11 +57,6 @@ func (w *PatroniWatcher) Start() {
 		defer func() {
 			close(w.resultChan)
 		}()
-		url_path_list := map[string]int{
-			"/primary":     PatroniStateMaster,
-			"/replica":     PatroniStateReplica,
-			"/synchronous": PatroniStateSyncReplica,
-		}
 		r := rand.New(rand.NewSource(99))
 		c := time.Tick(10 * time.Second)
 
@@ -63,7 +68,7 @@ func (w *PatroniWatcher) Start() {
 			default:
 				break
 			}
-			for path, state := range url_path_list {
+			for path, state := range w.urlToCheck {
 				log.Infof("called for %s", path)
 				url := w.Url + path
 				req, err := http.NewRequest("GET", url, nil)

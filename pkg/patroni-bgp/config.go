@@ -1,4 +1,4 @@
-package config
+package patroni_bgp
 
 import "github.com/GCFactory/Patroni-BGP/pkg/bgp"
 
@@ -19,10 +19,14 @@ type Config struct {
 	// VIPCIDR is cidr range for the VIP (primarily needed for BGP)
 	VIPCIDR string `yaml:"vipCidr"`
 
-	// MasterAddress is the IP or DNS Name to use as a VirtualIP
-	MasterAddress string `yaml:"address"`
+	// PrimaryAddress is the IP to announce for Primary instance
+	PrimaryAddress string `yaml:"address"`
 
-	ReplicaAddress string `yaml:"replicaAddress"`
+	// SyncReplicaAddress is the IP to announce for replica instance in sync mode
+	SyncReplicaAddress string `yaml:"replicaAddress"`
+
+	// AsyncReplicaAddress is the IP to announce for replica instance in async mode
+	AsyncReplicaAddress string `yaml:"asyncReplicaAddress"`
 
 	// Listen port for the VirtualIP
 	Port int `yaml:"port"`

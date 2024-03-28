@@ -461,7 +461,7 @@ func (configurator *network) SetIP(ip string) error {
 	return nil
 }
 
-// IP - return the IP MasterAddress
+// IP - return the IP PrimaryAddress
 func (configurator *network) IP() string {
 	configurator.mu.Lock()
 	defer configurator.mu.Unlock()
