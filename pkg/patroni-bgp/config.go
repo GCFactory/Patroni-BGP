@@ -77,5 +77,5 @@ type Config struct {
 	// DNSMode, this will set the mode DSN lookup will be performed (first, ipv4, ipv6, dual)
 	DNSMode string `yaml:"dnsDualStackMode"`
 
-	PatroniUrl string `yaml:"patroniAddress"`
+	PatroniURL string `yaml:"patroniURL"`
 }

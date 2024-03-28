@@ -5,8 +5,8 @@ const (
 	// vipLogLevel - defines the level of logging to produce (5 being the most verbose)
 	vipLogLevel = "vip_loglevel"
 
-	// patroniUrl - defines URL of patroni REST API
-	patroniUrl = "patroni_url"
+	// patroniURL - defines URL of patroni REST API
+	patroniURL = "patroni_url"
 
 	// primaryAddress - defines what address will be announced for Primary instance
 	primaryAddress = "patroni_primary_address"

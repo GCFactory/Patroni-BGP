@@ -35,9 +35,9 @@ func ParseEnvironment(c *Config) error {
 	}
 
 	// Find interface
-	env = os.Getenv(patroniUrl)
+	env = os.Getenv(patroniURL)
 	if env != "" {
-		c.PatroniUrl = env
+		c.PatroniURL = env
 	}
 
 	// Find interface

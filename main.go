@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"github.com/GCFactory/Patroni-BGP/pkg/manager"
 	patroni_bgp "github.com/GCFactory/Patroni-BGP/pkg/patroni-bgp"
 	"github.com/GCFactory/Patroni-BGP/pkg/vip"
@@ -91,7 +92,7 @@ func servePrometheusHTTPServer(ctx context.Context, config PrometheusHTTPServerC
 	var err error
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte(`<html>
 			<head><title>patroni-bgp</title></head>
 			<body>
@@ -108,7 +109,7 @@ func servePrometheusHTTPServer(ctx context.Context, config PrometheusHTTPServerC
 	}
 
 	go func() {
-		if err = srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err = srv.ListenAndServe(); err != nil && !errors.Is(http.ErrServerClosed, err) {
 			log.Fatalf("listen:%+s\n", err)
 		}
 	}()

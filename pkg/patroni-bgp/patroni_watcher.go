@@ -8,7 +8,7 @@ import (
 )
 
 type PatroniWatcher struct {
-	Url        string
+	URL        string
 	httpClient *http.Client
 
 	urlToCheck map[string]int
@@ -17,9 +17,9 @@ type PatroniWatcher struct {
 	stopChan   chan int
 }
 
-func NewPatroniWatcher(url string) (w *PatroniWatcher) {
+func NewPatroniWatcher(URL string) (w *PatroniWatcher) {
 	return &PatroniWatcher{
-		Url: url,
+		URL: URL,
 		httpClient: &http.Client{
 			Timeout: time.Second * 60 * 60 * 600,
 		},
@@ -70,11 +70,14 @@ func (w *PatroniWatcher) Start() {
 			}
 			for path, state := range w.urlToCheck {
 				log.Infof("called for %s", path)
-				url := w.Url + path
-				req, err := http.NewRequest("GET", url, nil)
+				url := w.URL + path
+				req, _ := http.NewRequest("GET", url, nil)
 				res, err := w.httpClient.Do(req)
+				errBody := res.Body.Close()
+
 				log.Infof("called for %v response %v", path, res.StatusCode)
-				if err != nil {
+
+				if err != nil || errBody != nil {
 					log.Warnf("error on patroni check: %s", err)
 					w.resultChan <- PatroniStateError
 				} else {

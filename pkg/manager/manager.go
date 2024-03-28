@@ -7,7 +7,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 )
 
@@ -27,9 +26,6 @@ type Manager struct {
 	// This is a prometheus gauge indicating the state of the sessions.
 	// 1 means "ESTABLISHED", 0 means "NOT ESTABLISHED"
 	bgpSessionInfoGauge *prometheus.GaugeVec
-
-	// This mutex is to protect calls from various goroutines
-	mutex sync.Mutex
 }
 
 // New will create a new managing object

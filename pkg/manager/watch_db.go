@@ -8,7 +8,7 @@ import (
 
 func (sm *Manager) patroniWatcher() error {
 	// Use a restartable watcher, as this should help in the event of etcd or timeout issues
-	rw := patroni_bgp.NewPatroniWatcher(sm.config.PatroniUrl)
+	rw := patroni_bgp.NewPatroniWatcher(sm.config.PatroniURL)
 	if sm.config.PrimaryAddress != "" && vip.IsIP(sm.config.PrimaryAddress) {
 		rw.EnablePrimaryAddress()
 	}
