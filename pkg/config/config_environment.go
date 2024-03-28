@@ -242,26 +242,5 @@ func ParseEnvironment(c *Config) error {
 		c.PrometheusHTTPServer = env
 	}
 
-	// Set Egress configuration(s)
-	env = os.Getenv(egressPodCidr)
-	if env != "" {
-		c.EgressPodCidr = env
-	}
-
-	env = os.Getenv(egressServiceCidr)
-	if env != "" {
-		c.EgressServiceCidr = env
-	}
-
-	// if this is set then we're enabling nftables
-	env = os.Getenv(egressWithNftables)
-	if env != "" {
-		b, err := strconv.ParseBool(env)
-		if err != nil {
-			return err
-		}
-		c.EgressWithNftables = b
-	}
-
 	return nil
 }

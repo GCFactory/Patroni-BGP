@@ -2,10 +2,6 @@ package config
 
 // Environment variables
 const (
-
-	// vipArp - defines if the arp broadcast should be enabled
-	vipArp = "vip_arp"
-
 	// vipLogLevel - defines the level of logging to produce (5 being the most verbose)
 	vipLogLevel = "vip_loglevel"
 
@@ -20,15 +16,6 @@ const (
 
 	// vipSubnet - defines the subnet that the vip will use
 	vipSubnet = "vip_subnet"
-
-	// egressPodCidr - defines the cidr that egress will ignore
-	egressPodCidr = "egress_podcidr"
-
-	// egressServiceCidr - defines the cidr that egress will ignore
-	egressServiceCidr = "egress_servicecidr"
-
-	// egressWithNftables - enables using nftables over iptables
-	egressWithNftables = "egress_withnftables"
 
 	/////////////////////////////////////
 	// TO DO:
@@ -98,18 +85,6 @@ const (
 
 	// vipCleanRoutingTable - defines if routing table will be cleaned of redundant routes on patroni-bgp's start
 	vipCleanRoutingTable = "vip_cleanroutingtable" //nolint
-
-	// lbEnable defines if the load-balancer should be enabled
-	lbEnable = "lb_enable"
-
-	// lbPort defines the port of load-balancer
-	lbPort = "lb_port"
-
-	// lbForwardingMethod defines the forwarding method of load-balancer
-	lbForwardingMethod = "lb_fwdmethod"
-
-	// EnableServiceSecurity defines if the load-balancer should only allow traffic to service ports
-	EnableServiceSecurity = "enable_service_security"
 
 	// prometheusServer defines the address prometheus listens on
 	prometheusServer = "prometheus_server"

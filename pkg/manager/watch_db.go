@@ -33,13 +33,14 @@ func (sm *Manager) patroniWatcher() error {
 				log.Errorf("unable to add host %s", sm.config.MasterAddress)
 			}
 		case patroni.PatroniStateReplica:
-			err := sm.bgpServer.DelHost(sm.config.ReplicaAddress)
+		case patroni.PatroniStateSyncReplica:
+			err := sm.bgpServer.DelHost(sm.config.MasterAddress)
 			if err != nil {
-				log.Errorf("unable to remove host %s", sm.config.ReplicaAddress)
+				log.Errorf("unable to remove host %s", sm.config.MasterAddress)
 			}
-			err = sm.bgpServer.AddHost(sm.config.MasterAddress)
+			err = sm.bgpServer.AddHost(sm.config.ReplicaAddress)
 			if err != nil {
-				log.Errorf("unable to add host %s", sm.config.MasterAddress)
+				log.Errorf("unable to add host %s", sm.config.ReplicaAddress)
 			}
 		case patroni.PatroniStateUndefined:
 			log.Warnln("undefined state")

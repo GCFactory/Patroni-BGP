@@ -12,6 +12,7 @@ const (
 	PatroniStateError
 	PatroniStateMaster
 	PatroniStateReplica
+	PatroniStateSyncReplica
 )
 
 type PatroniWatcher struct {
@@ -47,8 +48,9 @@ func (w *PatroniWatcher) Start() {
 			close(w.resultChan)
 		}()
 		url_path_list := map[string]int{
-			"/master":  PatroniStateMaster,
-			"/replica": PatroniStateReplica,
+			"/primary":     PatroniStateMaster,
+			"/replica":     PatroniStateReplica,
+			"/synchronous": PatroniStateSyncReplica,
 		}
 		r := rand.New(rand.NewSource(99))
 		c := time.Tick(10 * time.Second)
