@@ -80,26 +80,6 @@ func (sm *Manager) Start() error {
 	// All watchers and other goroutines should have an additional goroutine that blocks on this, to shut things down
 	sm.shutdownChan = make(chan struct{})
 
-	// If BGP is enabled then we start a server instance that will broadcast VIPs
-	if sm.config.EnableBGP {
-
-		log.Infoln("Starting Patroni-bgp Manager with the BGP engine")
-		return sm.startBGP()
-	}
-
-	if sm.config.EnableRoutingTable {
-		log.Infoln("Starting Patroni-bgp Manager with the Routing Table engine")
-		return sm.startTableMode()
-	}
-
-	log.Errorln("prematurely exiting Load-balancer as no modes [ARP/BGP/Wireguard] are enabled")
-	return nil
-}
-
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
+	log.Infoln("Starting Patroni-bgp Manager with the BGP engine")
+	return sm.startBGP()
 }

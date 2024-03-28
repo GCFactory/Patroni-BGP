@@ -62,9 +62,11 @@ func (w *PatroniWatcher) Start() {
 				break
 			}
 			for path, state := range url_path_list {
+				log.Infof("called for %s", path)
 				url := w.Url + path
 				req, err := http.NewRequest("GET", url, nil)
 				res, err := w.httpClient.Do(req)
+				log.Infof("called for %v response %v", path, res.StatusCode)
 				if err != nil {
 					log.Warnf("error on patroni check: %s", err)
 					w.resultChan <- PatroniStateError

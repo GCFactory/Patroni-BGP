@@ -1,42 +1,21 @@
 package manager
 
 import (
-	"context"
 	"github.com/GCFactory/Patroni-BGP/pkg/patroni"
 	log "github.com/sirupsen/logrus"
 )
 
-func (sm *Manager) patroniWatcher(ctx context.Context) error {
-
-	//id, err := os.Hostname()
-	//if err != nil {
-	//	return err
-	//}
-
+func (sm *Manager) patroniWatcher() error {
 	// Use a restartable watcher, as this should help in the event of etcd or timeout issues
 	rw := patroni.NewPatroniWatcher(sm.config.PatroniUrl)
 	rw.Start()
 
-	exitFunction := make(chan struct{})
 	go func() {
 		select {
 		case <-sm.shutdownChan:
 			log.Debug("(svcs) shutdown called")
 			// Stop the retry watcher
 			rw.Stop()
-			return
-		case <-exitFunction:
-			log.Debug("(svcs) function ending")
-			// Stop the retry watcher
-			rw.Stop()
-			err := sm.bgpServer.DelHost(sm.config.MasterAddress)
-			if err != nil {
-				log.Errorf("unable to remove host %s", sm.config.MasterAddress)
-			}
-			err = sm.bgpServer.DelHost(sm.config.ReplicaAddress)
-			if err != nil {
-				log.Errorf("unable to remove host %s", sm.config.ReplicaAddress)
-			}
 			return
 		}
 	}()
@@ -69,8 +48,6 @@ func (sm *Manager) patroniWatcher(ctx context.Context) error {
 			log.Warnln("error state")
 		}
 	}
-
-	close(exitFunction)
-	log.Warnln("Stopping watching services for type: LoadBalancer in all namespaces")
+	log.Warnln("Stopping bgp announce")
 	return nil
 }

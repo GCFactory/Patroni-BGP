@@ -14,33 +14,11 @@ import (
 )
 
 var (
-	initConfig       config.Config
-	initLoadBalancer config.LoadBalancer
+	initConfig config.Config
 )
-
-// Path to the configuration file
-var configPath string
-
-// Path to the configuration file
-// var namespace string
-
-// Disable the Virtual IP (bind to the existing network stack)
-var disableVIP bool
-
-// Disable the Virtual IP (bind to the existing network stack)
-// var controlPlane bool
-
-// Run as a load balancer service (within a pod / kubernetes)
-// var serviceArp bool
 
 // ConfigMap name within a Kubernetes cluster
 var configMap string
-
-// Configure the level of logging
-var logLevel uint32
-
-// Provider Config
-var providerConfig string
 
 func main() {
 	ctx := context.TODO()

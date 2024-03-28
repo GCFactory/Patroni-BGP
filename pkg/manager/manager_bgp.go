@@ -11,7 +11,6 @@ import (
 
 // Start will begin the Manager, which will start services and watch the configmap
 func (sm *Manager) startBGP() error {
-	// var ns string
 	var err error
 
 	log.Info("Starting the BGP server to advertise VIP routes to BGP peers")
@@ -38,7 +37,7 @@ func (sm *Manager) startBGP() error {
 
 	// use a Go context so we can tell the leaderelection code when we
 	// want to step down
-	ctx, cancel := context.WithCancel(context.Background())
+	_, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	// Defer a function to check if the bgpServer has been created and if so attempt to close it
@@ -54,17 +53,18 @@ func (sm *Manager) startBGP() error {
 	// Shutdown function that will wait on this signal, unless we call it ourselves
 	go func() {
 		<-sm.signalChan
+		sm.shutdownChan <- struct{}{}
 		log.Info("Received termination, signaling shutdown")
 		// Cancel the context, which will in turn cancel the leadership
 		cancel()
 	}()
 
-	err = sm.patroniWatcher(ctx)
+	err = sm.patroniWatcher()
 	if err != nil {
 		return err
 	}
 
-	log.Infof("Shutting down Kube-Vip")
+	log.Infof("Shutting down Patroni-bgp")
 
 	return nil
 }

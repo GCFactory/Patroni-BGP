@@ -90,26 +90,6 @@ func ParseEnvironment(c *Config) error {
 		c.VIPSubnet = env
 	}
 
-	// Find if ARP is enabled
-	env = os.Getenv(vipArp)
-	if env != "" {
-		b, err := strconv.ParseBool(env)
-		if err != nil {
-			return err
-		}
-		c.EnableARP = b
-	}
-
-	// Routing Table Mode
-	env = os.Getenv(vipRoutingTable)
-	if env != "" {
-		b, err := strconv.ParseBool(env)
-		if err != nil {
-			return err
-		}
-		c.EnableRoutingTable = b
-	}
-
 	// Routing Table ID
 	env = os.Getenv(vipRoutingTableID)
 	if env != "" {
@@ -154,16 +134,6 @@ func ParseEnvironment(c *Config) error {
 	env = os.Getenv(dnsMode)
 	if env != "" {
 		c.DNSMode = env
-	}
-
-	// BGP Server options
-	env = os.Getenv(bgpEnable)
-	if env != "" {
-		b, err := strconv.ParseBool(env)
-		if err != nil {
-			return err
-		}
-		c.EnableBGP = b
 	}
 
 	// BGP Router interface determines an interface that we can use to find an address for
@@ -264,41 +234,6 @@ func ParseEnvironment(c *Config) error {
 			return err
 		}
 		c.BGPConfig.KeepaliveInterval = u64
-	}
-
-	// Enable the load-balancer
-	env = os.Getenv(lbEnable)
-	if env != "" {
-		b, err := strconv.ParseBool(env)
-		if err != nil {
-			return err
-		}
-		c.EnableLoadBalancer = b
-	}
-
-	// Find loadbalancer port
-	env = os.Getenv(lbPort)
-	if env != "" {
-		i, err := strconv.ParseInt(env, 10, 32)
-		if err != nil {
-			return err
-		}
-		c.LoadBalancerPort = int(i)
-	}
-
-	// Find loadbalancer forwarding method
-	env = os.Getenv(lbForwardingMethod)
-	if env != "" {
-		c.LoadBalancerForwardingMethod = env
-	}
-
-	env = os.Getenv(EnableServiceSecurity)
-	if env != "" {
-		b, err := strconv.ParseBool(env)
-		if err != nil {
-			return err
-		}
-		c.EnableServiceSecurity = b
 	}
 
 	// Find Prometheus configuration
