@@ -5,7 +5,6 @@ linters:
   enable:
   - bodyclose
   - gofmt
-  - goimports
   - revive
   - gosec
   - misspell
