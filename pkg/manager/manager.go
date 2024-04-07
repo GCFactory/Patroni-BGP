@@ -2,7 +2,7 @@ package manager
 
 import (
 	"github.com/GCFactory/Patroni-BGP/pkg/bgp"
-	patroni_bgp "github.com/GCFactory/Patroni-BGP/pkg/patroni-bgp"
+	patroniBgp "github.com/GCFactory/Patroni-BGP/pkg/patroni-bgp"
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
 	"os"
@@ -12,7 +12,7 @@ import (
 
 type Manager struct {
 	configMap string
-	config    *patroni_bgp.Config
+	config    *patroniBgp.Config
 
 	//BGP Manager, this is a singleton that manages all BGP advertisements
 	bgpServer *bgp.Server
@@ -29,7 +29,7 @@ type Manager struct {
 }
 
 // New will create a new managing object
-func New(configMap string, config *patroni_bgp.Config) (*Manager, error) {
+func New(configMap string, config *patroniBgp.Config) (*Manager, error) {
 
 	// Flip this to something else
 	// if config.DetectControlPlane {

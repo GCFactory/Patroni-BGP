@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/GCFactory/Patroni-BGP/pkg/manager"
-	patroni_bgp "github.com/GCFactory/Patroni-BGP/pkg/patroni-bgp"
+	patroniBgp "github.com/GCFactory/Patroni-BGP/pkg/patroni-bgp"
 	"github.com/GCFactory/Patroni-BGP/pkg/vip"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	initConfig patroni_bgp.Config
+	initConfig patroniBgp.Config
 )
 
 // ConfigMap name within a Kubernetes cluster
@@ -24,7 +24,7 @@ var configMap string
 func main() {
 	ctx := context.TODO()
 	// parse environment variables, these will overwrite anything loaded or flags
-	err := patroni_bgp.ParseEnvironment(&initConfig)
+	err := patroniBgp.ParseEnvironment(&initConfig)
 	if err != nil {
 		log.Fatalln(err)
 	}

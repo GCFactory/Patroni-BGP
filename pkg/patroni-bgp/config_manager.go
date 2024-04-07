@@ -1,4 +1,4 @@
-package patroni_bgp
+package patroniBgp
 
 import (
 	"fmt"

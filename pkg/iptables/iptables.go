@@ -25,6 +25,7 @@ import (
 	"syscall"
 )
 
+// Error struct
 // Adds the output of stderr to exec.ExitError
 type Error struct {
 	exec.ExitError
@@ -33,6 +34,8 @@ type Error struct {
 	exitStatus *int //for overriding
 }
 
+// ExitStatus
+// Returns exit status from system-dependent exit information
 func (e *Error) ExitStatus() int {
 	if e.exitStatus != nil {
 		return *e.exitStatus
@@ -162,6 +165,7 @@ func New(opts ...Option) (*IPTables, error) {
 	return ipt, nil
 }
 
+// NewWithProtocol
 // New creates a new IPTables for the given proto.
 // The proto will determine which command is used, either "iptables" or "ip6tables".
 func NewWithProtocol(proto Protocol) (*IPTables, error) {
@@ -192,13 +196,15 @@ func (ipt *IPTables) Exists(table, chain string, rulespec ...string) (bool, erro
 	}
 }
 
-// Insert inserts rulespec to specified table/chain (in specified pos)
+// Insert
+// inserts rulespec to specified table/chain (in specified pos)
 func (ipt *IPTables) Insert(table, chain string, pos int, rulespec ...string) error {
 	cmd := append([]string{"-t", table, "-I", chain, strconv.Itoa(pos)}, rulespec...)
 	return ipt.run(cmd...)
 }
 
-// InsertUnique acts like Insert except that it won't insert a duplicate (no matter the position in the chain)
+// InsertUnique
+// acts like Insert except that it won't insert a duplicate (no matter the position in the chain)
 func (ipt *IPTables) InsertUnique(table, chain string, pos int, rulespec ...string) error {
 	exists, err := ipt.Exists(table, chain, rulespec...)
 	if err != nil {
@@ -212,13 +218,15 @@ func (ipt *IPTables) InsertUnique(table, chain string, pos int, rulespec ...stri
 	return nil
 }
 
-// Append appends rulespec to specified table/chain
+// Append
+// appends rulespec to specified table/chain
 func (ipt *IPTables) Append(table, chain string, rulespec ...string) error {
 	cmd := append([]string{"-t", table, "-A", chain}, rulespec...)
 	return ipt.run(cmd...)
 }
 
-// AppendUnique acts like Append except that it won't add a duplicate
+// AppendUnique
+// acts like Append except that it won't add a duplicate
 func (ipt *IPTables) AppendUnique(table, chain string, rulespec ...string) error {
 	exists, err := ipt.Exists(table, chain, rulespec...)
 	if err != nil {
@@ -232,7 +240,8 @@ func (ipt *IPTables) AppendUnique(table, chain string, rulespec ...string) error
 	return nil
 }
 
-// Delete removes rulespec in specified table/chain
+// Delete
+// removes rulespec in specified table/chain
 func (ipt *IPTables) Delete(table, chain string, rulespec ...string) error {
 	cmd := append([]string{"-t", table, "-D", chain}, rulespec...)
 	return ipt.run(cmd...)
@@ -724,6 +733,7 @@ func filterRuleOutput(rule string) string {
 	return out
 }
 
+// GetIPTablesRuleSpecification
 func GetIPTablesRuleSpecification(rule, specification string) string {
 	parts := strings.Split(rule, " ")
 	for i, part := range parts {

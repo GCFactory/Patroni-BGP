@@ -1,4 +1,4 @@
-package patroni_bgp
+package patroniBgp
 
 import "github.com/GCFactory/Patroni-BGP/pkg/bgp"
 
